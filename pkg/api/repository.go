@@ -4,17 +4,11 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"io"
+	"github.com/astoniq/janus/pkg/config"
 	"net/url"
-	"time"
-)
-
-const (
-	file = "file"
 )
 
 type Repository interface {
-	io.Closer
 	All() ([]*Definition, error)
 }
 
@@ -26,8 +20,8 @@ type Listener interface {
 	Listen(ctx context.Context, cfgChan chan<- ConfigurationMessage)
 }
 
-func BuildRepository(dsn string, refreshTime time.Duration) (Repository, error) {
-	dsnUrl, err := url.Parse(dsn)
+func BuildRepository(cfg config.Config) (Repository, error) {
+	dsnUrl, err := url.Parse(cfg.Database.DSN)
 	if err != nil {
 		return nil, fmt.Errorf("error parsing the DSN: %w", err)
 	}

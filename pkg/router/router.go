@@ -21,3 +21,13 @@ type Router interface {
 	Use(handlers ...Constructor) Router
 	Count() int
 }
+
+type Options struct {
+	NotFoundHandler           http.HandlerFunc
+	SafeAddRoutesWhileRunning bool
+}
+
+var DefaultOptions = Options{
+	NotFoundHandler:           http.NotFound,
+	SafeAddRoutesWhileRunning: true,
+}
